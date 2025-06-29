@@ -9,11 +9,15 @@ import { CSS } from '@dnd-kit/utilities';
 import { AdminCourseSingularType } from "@/app/dal/admin/admin-get-course";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronRightIcon, ChevronDownIcon, GripVerticalIcon, Trash2Icon, FileTextIcon } from "lucide-react";
+import { ChevronRightIcon, ChevronDownIcon, GripVerticalIcon, FileTextIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
 import { reorderChapters, reorderLessons } from "../actions";
+import { NewChapterModal } from "./NewChapterModal";
+import { NewLessonModal } from "./NewLessonModal";
+import { DeleteLesson } from "./DeleteLesson";
+import { DeleteChapter } from "./DeleteChapter";
 
 interface iAppProps {
     data: AdminCourseSingularType
@@ -244,6 +248,7 @@ export function CourseContent({ data }: iAppProps) {
                     <CardTitle>
                         Chapters
                     </CardTitle>
+                    <NewChapterModal courseId={data.id} />
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <SortableContext strategy={verticalListSortingStrategy} items={items}>
@@ -276,9 +281,7 @@ export function CourseContent({ data }: iAppProps) {
                                                     </p>
                                                 </div>
 
-                                                <Button size="icon" variant="ghost">
-                                                    <Trash2Icon className="size-4" />
-                                                </Button>
+                                                <DeleteChapter courseId={data.id} chapterId={item.id} />
                                             </div>
 
                                             <CollapsibleContent>
@@ -300,18 +303,14 @@ export function CourseContent({ data }: iAppProps) {
                                                                                 {lesson.title}
                                                                             </Link>
                                                                         </div>
-                                                                        <Button size="icon" variant="ghost">
-                                                                            <Trash2Icon className="size-4" />
-                                                                        </Button>
+                                                                        <DeleteLesson chapterId={item.id} courseId={data.id} lessonId={lesson.id} />
                                                                     </div>
                                                                 )}
                                                             </SortableItem>
                                                         ))}
                                                     </SortableContext>
                                                     <div className="">
-                                                        <Button variant="outline" className="w-full">
-                                                            Create New Lesson
-                                                        </Button>
+                                                        <NewLessonModal courseId={data.id} chapterId={item.id} />
                                                     </div>
                                                 </div>
                                             </CollapsibleContent>
