@@ -51,15 +51,18 @@ export function RenderErrorState() {
     )
 }
 
-export function RenderUploadedState({ previewUrl, isDeleting, onDelete }: { previewUrl: string, isDeleting: boolean, onDelete: () => void }) {
+export function RenderUploadedState({ previewUrl, isDeleting, onDelete, fileType }: { previewUrl: string, isDeleting: boolean, onDelete: () => void, fileType: "image" | "video" }) {
     return (
-        <div className="text-center">
-            <Image
+        <div className="relative group w-full h-full flex items-center justify-center">
+            {fileType === "video" ? (
+                <video src={previewUrl} className="rounded-md w-full h-full" controls />
+            ) : <Image
                 src={previewUrl}
                 alt="Uploaded File"
                 fill
                 className="object-contain p-2"
-            />
+                sizes="80%"
+            />}
             <Button
                 variant="default"
                 size="icon"

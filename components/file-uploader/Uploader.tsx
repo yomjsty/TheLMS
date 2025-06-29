@@ -24,9 +24,10 @@ interface UploaderState {
 interface iAppProps {
     value?: string;
     onChange?: (value: string) => void;
+    fileTypeAccepted: "image" | "video"
 }
 
-export function Uploader({ value, onChange }: iAppProps) {
+export function Uploader({ value, onChange, fileTypeAccepted }: iAppProps) {
     const fileUrl = useConstructUrl(value || "")
     const [fileState, setFileState] = useState<UploaderState>({
         error: false,
@@ -35,9 +36,9 @@ export function Uploader({ value, onChange }: iAppProps) {
         uploading: false,
         progress: 0,
         isDeleting: false,
-        fileType: "image",
+        fileType: fileTypeAccepted,
         key: value,
-        objectUrl: fileUrl
+        objectUrl: value ? fileUrl : undefined
     })
 
     const uploadFile = useCallback(async (file: File) => {
@@ -55,7 +56,7 @@ export function Uploader({ value, onChange }: iAppProps) {
                     fileName: file.name,
                     contentType: file.type,
                     size: file.size,
-                    isImage: true
+                    isImage: fileTypeAccepted === "image" ? true : false
                 })
             })
 
@@ -123,7 +124,7 @@ export function Uploader({ value, onChange }: iAppProps) {
                 uploading: false,
             }))
         }
-    }, [onChange])
+    }, [onChange, fileTypeAccepted])
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles.length > 0) {
@@ -141,12 +142,12 @@ export function Uploader({ value, onChange }: iAppProps) {
                 error: false,
                 id: uuidv4(),
                 isDeleting: false,
-                fileType: "image"
+                fileType: fileTypeAccepted
             })
 
             uploadFile(file)
         }
-    }, [fileState.objectUrl, uploadFile])
+    }, [fileState.objectUrl, uploadFile, fileTypeAccepted])
 
     async function handleRemoveFile() {
         if (fileState.isDeleting || !fileState.objectUrl) return;
@@ -186,7 +187,7 @@ export function Uploader({ value, onChange }: iAppProps) {
                 progress: 0,
                 objectUrl: undefined,
                 error: false,
-                fileType: "image",
+                fileType: fileTypeAccepted,
                 id: null,
                 isDeleting: false,
             }))
@@ -230,7 +231,7 @@ export function Uploader({ value, onChange }: iAppProps) {
 
         if (fileState.objectUrl) {
             return (
-                <RenderUploadedState previewUrl={fileState.objectUrl} isDeleting={fileState.isDeleting} onDelete={handleRemoveFile} />
+                <RenderUploadedState previewUrl={fileState.objectUrl} isDeleting={fileState.isDeleting} onDelete={handleRemoveFile} fileType={fileState.fileType} />
             )
         }
 
@@ -247,10 +248,10 @@ export function Uploader({ value, onChange }: iAppProps) {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: { "image/*": [] },
+        accept: fileTypeAccepted === "video" ? { "video/*": [] } : { "image/*": [] },
         maxFiles: 1,
         multiple: false,
-        maxSize: 1024 * 1024 * 5,
+        maxSize: fileTypeAccepted === "video" ? 1024 * 1024 * 500 : 1024 * 1024 * 5,
         onDropRejected: rejectedFiles,
         disabled: fileState.uploading || !!fileState.objectUrl
     })
@@ -259,7 +260,7 @@ export function Uploader({ value, onChange }: iAppProps) {
         <Card
             {...getRootProps()}
             className={cn(
-                "relative border-2 border-dashed transition-colors duration-100 w-full h-64",
+                "relative border-2 border-dashed transition-colors duration-100 w-full h-96",
                 isDragActive ? "border-primary bg-primary/10 border-solid" : "border-border hover:border-primary"
             )}
         >
