@@ -34,7 +34,7 @@ export function CourseCard({ data }: iAppProps) {
                 >
                     {data.title}
                 </Link>
-                <p className="text-sm text-muted-foreground leading-tight mt-2 line-clamp-3 whitespace-pre-line">{data.smallDescription}</p>
+                <p className="text-sm text-muted-foreground leading-tight mt-2 line-clamp-2 whitespace-pre-line">{data.smallDescription}</p>
 
                 <div className="mt-4 flex items-center gap-x-5">
                     <div className="flex items-center gap-x-2">

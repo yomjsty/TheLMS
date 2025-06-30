@@ -57,12 +57,12 @@ export default async function CoursePage({ params }: { params: Params }) {
                     </div>
                     <Separator className="my-4" />
 
-                    <div className="space-y-6">
+                    <div className="space-y-5">
                         <h2 className="text-2xl font-semibold tracking-tight">Course Description</h2>
                         <RenderDescription json={JSON.parse(course.description)} />
                     </div>
                 </div>
-                <div className="mt-12 space-y-6">
+                <div className="mt-10 space-y-6">
                     <div className="flex items-center justify-between">
                         <h2 className="text-2xl font-semibold tracking-tight">Course Content</h2>
                         <div className="">

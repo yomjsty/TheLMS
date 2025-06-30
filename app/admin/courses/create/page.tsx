@@ -120,7 +120,10 @@ export default function CreateCoursePage() {
 
                                 <Button type="button" className="w-fit" onClick={() => {
                                     const titleValue = form.getValues("title")
-                                    const slug = slugify(titleValue);
+                                    const slug = slugify(titleValue, {
+                                        lower: true,
+                                        remove: /[*+~.()'"!:@]/g
+                                    });
                                     form.setValue("slug", slug, { shouldValidate: true });
                                 }}>
                                     Generate Slug
@@ -263,11 +266,28 @@ export default function CreateCoursePage() {
                                                 Price (Rp)
                                             </FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    placeholder="Enter course price"
-                                                    type="number"
-                                                    {...field}
-                                                />
+                                                <div className="flex items-center gap-2">
+                                                    <Input
+                                                        placeholder="Enter course price"
+                                                        type="number"
+                                                        {...field}
+                                                        onChange={(e) => {
+                                                            const value = e.target.value;
+                                                            field.onChange(value === "" ? 0 : parseInt(value));
+                                                        }}
+                                                        value={field.value === 0 ? "" : field.value}
+                                                    />
+                                                    {field.value > 0 && (
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {new Intl.NumberFormat('id-ID', {
+                                                                style: 'currency',
+                                                                currency: 'IDR',
+                                                                minimumFractionDigits: 0,
+                                                                maximumFractionDigits: 0,
+                                                            }).format(field.value)}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

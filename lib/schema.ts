@@ -23,7 +23,9 @@ export const courseSchema = z.object({
         message: "Category is required"
     }),
     smallDescription: z.string().min(3, { message: "Small description must be at least 3 characters" }).max(200, { message: "Small description must be less than 200 characters" }),
-    slug: z.string().min(3, { message: "Slug must be at least 3 characters" }),
+    slug: z.string()
+        .min(3, { message: "Slug must be at least 3 characters" })
+        .regex(/^[a-z0-9-]+$/, { message: "Slug can only contain lowercase letters, numbers, and hyphens" }),
     status: z.enum(courseStatuses, {
         message: "Status is required"
     }),
