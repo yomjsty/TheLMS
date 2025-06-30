@@ -1,27 +1,19 @@
 "use server"
 
 import { requireAdmin } from "@/app/dal/admin/require-admin";
-import arcjet, { detectBot, fixedWindow } from "@/lib/arcjet";
+import arcjet, { fixedWindow } from "@/lib/arcjet";
 import { prisma } from "@/lib/db";
 import { courseSchema, CourseSchemaType } from "@/lib/schema";
 import { ApiResponse } from "@/lib/types";
 import { request } from "@arcjet/next";
 
-const aj = arcjet
-    .withRule(
-        detectBot({
-            mode: "LIVE",
-            allow: [],
-
-        })
-    )
-    .withRule(
-        fixedWindow({
-            mode: "LIVE",
-            window: "1m",
-            max: 5,
-        })
-    )
+const aj = arcjet.withRule(
+    fixedWindow({
+        mode: "LIVE",
+        window: "1m",
+        max: 5,
+    })
+)
 
 export async function CreateCourse(values: CourseSchemaType): Promise<ApiResponse> {
     const session = await requireAdmin();

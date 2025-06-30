@@ -1,7 +1,6 @@
 import { getCourse } from "@/app/dal/course/get-course";
 import { RenderDescription } from "@/components/text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
@@ -9,6 +8,10 @@ import { env } from "@/lib/env";
 import { IconBook, IconCategory, IconChartBar, IconChevronDown, IconClock, IconPlayerPlay } from "@tabler/icons-react";
 import { CheckIcon } from "lucide-react";
 import Image from "next/image";
+import { checkIfCourseBought } from "@/app/dal/user/user-is-enrolled";
+import Link from "next/link";
+import { EnrollmentButton } from "./_components/EnrollmentButton";
+import { buttonVariants } from "@/components/ui/button";
 
 type Params = Promise<{
     slug: string
@@ -17,6 +20,7 @@ type Params = Promise<{
 export default async function CoursePage({ params }: { params: Params }) {
     const { slug } = await params;
     const course = await getCourse(slug);
+    const isEnrolled = await checkIfCourseBought(course.id)
 
     return (
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mt-8">
@@ -200,9 +204,13 @@ export default async function CoursePage({ params }: { params: Params }) {
                                 </ul>
                             </div>
 
-                            <Button className="w-full">
-                                Enroll Now!
-                            </Button>
+                            {isEnrolled ? (
+                                <Link href={`/dashboard`} className={buttonVariants({ variant: "default", className: "w-full" })}>
+                                    Learn Now!
+                                </Link>
+                            ) : (
+                                <EnrollmentButton courseId={course.id} />
+                            )}
                             <p className="text-center text-xs text-muted-foreground">30-day money-back guarantee</p>
                         </CardContent>
 
