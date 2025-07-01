@@ -19,6 +19,5 @@ async function LessonLoader({ lessonId }: { lessonId: string }) {
     const data = await getLessonContent(lessonId);
     return (
         <CourseContent data={data} />
-
     )
 }

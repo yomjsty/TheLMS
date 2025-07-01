@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export async function getCourseSidebarData(slug: string) {
+
     const session = await requireUser();
 
     const course = await prisma.course.findUnique({

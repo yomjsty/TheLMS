@@ -7,14 +7,21 @@ import { adminGetRecentCourses } from "../dal/admin/admin-get-recent-courses";
 import { EmptyState } from "@/components/general/EmptyState";
 import { AdminCourseCard, AdminCourseCardSkeleton } from "./courses/_components/AdminCourseCard";
 import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 export default async function Page() {
-  const enrollmentData = await adminGetEnrollmentStat();
 
   return (
     <>
-      <SectionCards />
-      <ChartAreaInteractive data={enrollmentData} />
+      <Suspense fallback={(
+        <div className="w-full min-h-96 flex items-center justify-center gap-4">
+          <Loader2 className="size-10 animate-spin" />
+          Loading Statistics...
+        </div>
+      )}>
+        <SectionCards />
+        <GetEnrollmentStat />
+      </Suspense>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Recent Courses</h2>
@@ -27,6 +34,13 @@ export default async function Page() {
         </Suspense>
       </div>
     </>
+  )
+}
+
+async function GetEnrollmentStat() {
+  const data = await adminGetEnrollmentStat();
+  return (
+    <ChartAreaInteractive data={data} />
   )
 }
 

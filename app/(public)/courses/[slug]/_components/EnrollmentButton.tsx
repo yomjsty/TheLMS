@@ -15,7 +15,7 @@ export function EnrollmentButton({ courseId }: { courseId: string }) {
             const { data: result, error } = await tryCatch(enrollInCourse(courseId))
 
             if (error) {
-                toast.error("An error occurred while enrolling in the course. Please try again later.")
+                toast.error("You need to be logged in to enroll in a course.")
                 return
             }
 

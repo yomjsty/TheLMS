@@ -1,13 +1,14 @@
+import Footer from "./_components/Footer";
 import { Navbar } from "./_components/Navbar";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="">
             <Navbar />
-            <main className="container mx-auto px-4 md:px-6 lg:px-8 mb-32">
+            <main className="container mx-auto px-4 md:px-6 lg:px-8">
                 {children}
             </main>
-            <h1>Footer</h1>
+            <Footer />
         </div>
     )
 }

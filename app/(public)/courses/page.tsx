@@ -34,7 +34,7 @@ async function RenderCourses() {
 function LoadingSkeletonLayout() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 9 }).map((_, index) => (
+            {Array.from({ length: 6 }).map((_, index) => (
                 <CourseCardSkeleton key={index} />
             ))}
         </div>

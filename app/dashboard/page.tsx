@@ -2,12 +2,10 @@ import { EmptyState } from "@/components/general/EmptyState"
 import { getAllCourses } from "../dal/course/get-all-courses"
 import { getEnrolledCourses } from "../dal/user/get-enrolled-courses"
 import { CourseCard } from "../(public)/_components/CourseCard"
-import { CourseProgressCard } from "./_components/CourseProgressCard"
+import { CourseCardSkeleton, CourseProgressCard } from "./_components/CourseProgressCard"
+import { Suspense } from "react"
 
 export default async function DashboardPage() {
-  const [courses, enrolledCourses] = await Promise.all([getAllCourses(), getEnrolledCourses()])
-
-
 
   return (
     <>
@@ -15,7 +13,18 @@ export default async function DashboardPage() {
         <h1 className="text-2xl font-bold">Enrolled Courses</h1>
         <p className="text-muted-foreground">Here are the courses you are enrolled in.</p>
       </div>
+      <Suspense fallback={<LoadingSkeletonLayout />}>
+        <RenderCourses />
+      </Suspense>
+    </>
+  )
+}
 
+async function RenderCourses() {
+  const [courses, enrolledCourses] = await Promise.all([getAllCourses(), getEnrolledCourses()])
+
+  return (
+    <>
       {enrolledCourses.length === 0 ? (
         <EmptyState title="No enrolled courses" description="You are not enrolled in any courses." buttonText="Explore Courses" href="/courses" />
       ) : (
@@ -52,3 +61,12 @@ export default async function DashboardPage() {
   )
 }
 
+function LoadingSkeletonLayout() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <CourseCardSkeleton key={index} />
+      ))}
+    </div>
+  )
+}

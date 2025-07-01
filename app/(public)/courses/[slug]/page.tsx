@@ -12,6 +12,8 @@ import { checkIfCourseBought } from "@/app/dal/user/user-is-enrolled";
 import Link from "next/link";
 import { EnrollmentButton } from "./_components/EnrollmentButton";
 import { buttonVariants } from "@/components/ui/button";
+import { Suspense } from "react";
+import { CourseSkeleton } from "./_components/CourseSkeleton";
 
 type Params = Promise<{
     slug: string
@@ -19,6 +21,15 @@ type Params = Promise<{
 
 export default async function CoursePage({ params }: { params: Params }) {
     const { slug } = await params;
+
+    return (
+        <Suspense fallback={<CourseSkeleton />}>
+            <CourseLoader slug={slug} />
+        </Suspense>
+    )
+}
+
+async function CourseLoader({ slug }: { slug: string }) {
     const course = await getCourse(slug);
     const isEnrolled = await checkIfCourseBought(course.id)
 
@@ -219,4 +230,5 @@ export default async function CoursePage({ params }: { params: Params }) {
             </div>
         </div>
     )
+
 }

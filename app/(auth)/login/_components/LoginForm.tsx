@@ -72,7 +72,7 @@ export default function LoginForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-6">
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2">
                     <Button
                         type="button"
                         variant="outline"
@@ -85,7 +85,7 @@ export default function LoginForm() {
                         <span>GitHub</span>
                         {githubPending && <Loader2 className="h-4 w-4 animate-spin" />}
                     </Button>
-                    <Button
+                    {/* <Button
                         type="button"
                         variant="outline"
                         className="w-full">
@@ -108,7 +108,7 @@ export default function LoginForm() {
                                 d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
                         </svg>
                         <span>Google</span>
-                    </Button>
+                    </Button> */}
                 </div>
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                     <span className="relative z-10 bg-card px-2 text-muted-foreground">Or continue with</span>
