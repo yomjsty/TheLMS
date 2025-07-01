@@ -2,6 +2,8 @@ import { getAllCourses } from "@/app/dal/course/get-all-courses"
 import { CourseCard, CourseCardSkeleton } from "../_components/CourseCard";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default function CoursesPage() {
     return (
         <div className="mt-5">
