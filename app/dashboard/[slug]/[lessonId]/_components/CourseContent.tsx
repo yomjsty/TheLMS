@@ -1,8 +1,14 @@
+"use client"
+
 import { LessonContentType } from "@/app/dal/course/get-lesson-content"
 import { RenderDescription } from "@/components/text-editor/RenderDescription"
 import { Button } from "@/components/ui/button"
+import { tryCatch } from "@/hooks/try-catch"
 import { useConstructUrl } from "@/hooks/use-construct-url"
-import { BookIcon, CheckCircle } from "lucide-react"
+import { BookIcon, CheckCircle, Loader2 } from "lucide-react"
+import { useTransition } from "react"
+import { markLessonComplete } from "../actions"
+import { toast } from "sonner"
 
 interface iAppProps {
     data: LessonContentType
@@ -10,6 +16,8 @@ interface iAppProps {
 
 
 export function CourseContent({ data }: iAppProps) {
+    const [pending, startTransition] = useTransition();
+
     function VideoPlayer({
         thumbnailKey,
         videoKey,
@@ -54,15 +62,43 @@ export function CourseContent({ data }: iAppProps) {
         )
     }
 
+    function onSubmit() {
+        startTransition(async () => {
+            const { data: result, error } = await tryCatch(markLessonComplete(data.id, data.Chapter.Course.slug))
+
+            if (error) {
+                if (error.message === "NEXT_REDIRECT") {
+                    toast.error("You are not an admin")
+                } else {
+                    toast.error(error.message)
+                }
+                return
+            }
+
+            if (result.status === "success") {
+                toast.success(result.message)
+            } else if (result.status === "error") {
+                toast.error(result.message)
+            }
+        })
+    }
+
     return (
         <div className="flex flex-col h-full bg-background pl-4">
             <VideoPlayer thumbnailKey={data.thumbnailKey ?? ""} videoKey={data.videoKey ?? ""} />
 
             <div className="py-4 border-b">
-                <Button variant="outline">
-                    <CheckCircle className="size-4 mr-2 text-green-500" />
-                    Mark as complete
-                </Button>
+                {data.lessonProgress.length > 0 ? (
+                    <Button className="bg-green-600/10 text-green-500 hover:text-green-600" variant="outline">
+                        <CheckCircle className="size-4 mr-2 text-green-500 hover:text-green-600" />
+                        Completed
+                    </Button>
+                ) : (
+                    <Button variant="outline" onClick={onSubmit} disabled={pending}>
+                        <CheckCircle className="size-4 mr-2 text-green-500" />
+                        {pending && <Loader2 className="size-4 ml-2 animate-spin" />} Mark as complete
+                    </Button>
+                )}
             </div>
 
             <div className="space-y-3 pt-3">
