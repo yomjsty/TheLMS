@@ -89,3 +89,33 @@ export default function Home() {
     </>
   );
 }
+
+export const metadata = {
+  title: "Home | LMS",
+  description: "Discover a new way to learn with our modern, interactive platform, and access high-quality content from anywhere, anytime.",
+  openGraph: {
+    title: "Home | LMS",
+    description: "Discover a new way to learn with our modern, interactive platform, and access high-quality content from anywhere, anytime.",
+    url: "https://the-lms-one.vercel.app/",
+    siteName: "LMS",
+    images: [
+      {
+        url: "/logo-rectangle.png",
+        width: 1200,
+        height: 630,
+        alt: "LMS Home Page"
+      }
+    ],
+    locale: "en_US",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Home | LMS",
+    description: "Discover a new way to learn with our modern, interactive platform, and access high-quality content from anywhere, anytime.",
+    images: ["/logo-rectangle.png"]
+  },
+  alternates: {
+    canonical: "https://the-lms-one.vercel.app/"
+  }
+};

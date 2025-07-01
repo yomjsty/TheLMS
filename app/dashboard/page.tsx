@@ -70,3 +70,33 @@ function LoadingSkeletonLayout() {
     </div>
   )
 }
+
+export const metadata = {
+  title: "Dashboard | LMS",
+  description: "View your enrolled and available courses, track your progress, and manage your learning journey.",
+  openGraph: {
+    title: "Dashboard | LMS",
+    description: "View your enrolled and available courses, track your progress, and manage your learning journey.",
+    url: "https://the-lms-one.vercel.app/dashboard",
+    siteName: "LMS",
+    images: [
+      {
+        url: "/logo-rectangle.png",
+        width: 1200,
+        height: 630,
+        alt: "LMS Dashboard"
+      }
+    ],
+    locale: "en_US",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dashboard | LMS",
+    description: "View your enrolled and available courses, track your progress, and manage your learning journey.",
+    images: ["/logo-rectangle.png"]
+  },
+  alternates: {
+    canonical: "https://the-lms-one.vercel.app/dashboard"
+  }
+};

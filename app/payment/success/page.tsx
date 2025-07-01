@@ -26,3 +26,33 @@ export default function PaymentSuccessPage() {
         </div>
     )
 }
+
+export const metadata = {
+    title: "Payment Successful | LMS",
+    description: "Congratulations! Your payment was successful. You can now access the course.",
+    openGraph: {
+        title: "Payment Successful | LMS",
+        description: "Congratulations! Your payment was successful. You can now access the course.",
+        url: "https://the-lms-one.vercel.app/payment/success",
+        siteName: "LMS",
+        images: [
+            {
+                url: "/logo-rectangle.png",
+                width: 1200,
+                height: 630,
+                alt: "LMS Payment Success"
+            }
+        ],
+        locale: "en_US",
+        type: "website"
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Payment Successful | LMS",
+        description: "Congratulations! Your payment was successful. You can now access the course.",
+        images: ["/logo-rectangle.png"]
+    },
+    alternates: {
+        canonical: "https://the-lms-one.vercel.app/payment/success"
+    }
+};
